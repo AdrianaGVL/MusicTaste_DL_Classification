@@ -11,14 +11,16 @@
 import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix
 import numpy as np
+!pip install seaborn
+import seaborn as sns
 
 
 # Uses categorical variables because it is what is used in the deep learning (DL) models
 def accloss(history, modelname, savepath, savename):
     # 1. Plot accuracy
     plt.figure()
-    plt.plot(history.history['categorical_accuracy'])
-    plt.plot(history.history['val_categorical_accuracy'])
+    plt.plot(history.history['accuracy'])
+    plt.plot(history.history['val_accuracy'])
     plt.title(f'{modelname} Accuracy')
     plt.ylabel('Accuracy')
     plt.xlabel('Epoch')
@@ -48,11 +50,8 @@ def accloss(history, modelname, savepath, savename):
 
 def cm(real_labels, pred_labels, modelname, classes, savepath, savename):
     cm = confusion_matrix(real_labels, pred_labels)
-    plt.imshow(cm, interpolation='nearest', cmap=plt.cm.Blues)
-    tick_marks = np.arange(len(classes))
-    plt.xticks(tick_marks, classes, rotation=45)
-    plt.yticks(tick_marks, classes, rotation=45)
-    plt.tight_layout()
+    sns.heatmap(cm, annot=True, fmt='d', cmap=plt.cm.Blues, xticklabels=classes, yticklabels=classes)
+    plt.xticks(rotation=45)
     plt.title(f'{modelname} Confusion Matrix')
     plt.ylabel('True label')
     plt.xlabel('Predicted label')
