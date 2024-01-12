@@ -10,8 +10,6 @@
 # Libraries
 import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix
-import numpy as np
-!pip install seaborn
 import seaborn as sns
 
 
@@ -19,8 +17,8 @@ import seaborn as sns
 def accloss(history, modelname, savepath, savename):
     # 1. Plot accuracy
     plt.figure()
-    plt.plot(history.history['accuracy'])
-    plt.plot(history.history['val_accuracy'])
+    plt.plot(history.history['categorical_accuracy'])
+    plt.plot(history.history['val_categorical_accuracy'])
     plt.title(f'{modelname} Accuracy')
     plt.ylabel('Accuracy')
     plt.xlabel('Epoch')
