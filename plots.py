@@ -9,7 +9,7 @@
 
 # Libraries
 import matplotlib.pyplot as plt
-from sklearn.metrics import confusion_matrix
+from sklearn.metrics import confusion_matrix, multilabel_confusion_matrix
 import seaborn as sns
 
 
@@ -17,8 +17,8 @@ import seaborn as sns
 def accloss(history, modelname, savepath, savename):
     # 1. Plot accuracy
     plt.figure()
-    plt.plot(history.history['categorical_accuracy'])
-    plt.plot(history.history['val_categorical_accuracy'])
+    plt.plot(history.history['accuracy'])
+    plt.plot(history.history['val_accuracy'])
     plt.title(f'{modelname} Accuracy')
     plt.ylabel('Accuracy')
     plt.xlabel('Epoch')
@@ -58,3 +58,21 @@ def cm(real_labels, pred_labels, modelname, classes, savepath, savename):
     plt.show()
 
     return
+
+
+def cm_mutiabel(real_labels, pred_labels, modelname, classes, savepath, savename):
+# Plot confusion matrix
+    confusion = multilabel_confusion_matrix(real_labels, pred_labels)
+    fig = plt.figure(figsize = (14, 8))
+    for i, (label, matrix) in enumerate(zip(real_labels, confusion)):
+        plt.subplot(f'23{i+1}')
+        labels = [f'not_{label}', label]
+        sns.heatmap(matrix, annot=True, fmt='d', cmap='Blues', xticklabels=labels, yticklabels=labels)
+        plt.title(labels[0])
+    plt.xticks(rotation=45)
+    plt.ylabel('True label')
+    plt.xlabel('Predicted label')
+    fig_save_path = f'{savepath}/cm_{savename}.png'
+    plt.savefig(fig_save_path)
+    plt.show()
+    plt.tight_layout()

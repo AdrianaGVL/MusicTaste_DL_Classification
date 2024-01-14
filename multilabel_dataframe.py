@@ -23,13 +23,13 @@ def process_genres(col_genres, poss_genres):
     return genres
 
 
-# New empty Dataframe
-multilabel_data = pd.DataFrame(columns=['TRACK_ID', 'Genres'])
 # Data available
 datas = ['training', 'test', 'validation']
 possible_genres = ['Pop', 'Alternative', 'Classical', 'Dance', 'Techno', 'Rock']
 
 for ds in datas:
+    # New empty Dataframe
+    multilabel_data = pd.DataFrame(columns=['TRACK_ID', 'Genres'])
     # Paths
     files_tsv = []
     if ds == 'training':
@@ -53,15 +53,18 @@ for ds in datas:
                 if row == ['TRACK_ID', 'ARTIST_ID', 'ALBUM_ID', 'PATH', 'DURATION', 'TAGS']:
                     continue
                 track_id = row[0].split("_")[1]
+                track_id_without_zeros = str(int(track_id))
+                track_id = f'{track_id_without_zeros}.png'
                 every_genre = row[-1]
 
                 # Process the genres
                 labels = process_genres(every_genre, possible_genres)
+                labels_str = ', '.join(labels)
 
                 # Add the info to the dataframe
-                multilabel_data = multilabel_data._append({'TRACK_ID': track_id, 'Genres': labels}, ignore_index=True)
+                multilabel_data = multilabel_data._append({'TRACK_ID': track_id, 'Genres': labels_str}, ignore_index=True)
 
-    multilabel_data.to_csv(f'dataset/{ds}_multilabel.csv', sep='\t', index=False)
+    multilabel_data.to_csv(f'dataset_multilabel/{ds}_multilabel.csv', sep='\t', index=False)
 
 
-print(multilabel_data)
+# print(multilabel_data)
