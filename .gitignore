@@ -2,4 +2,3 @@ papers/
 .idea/
 __pycache__/
 results/ViT/*.h5
-dataset_multilabel/
