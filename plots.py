@@ -14,18 +14,20 @@ import seaborn as sns
 
 
 # Uses categorical variables because it is what is used in the deep learning (DL) models
-def accloss(history, modelname, savepath, savename):
+def accloss(history, model_name, save_path, save_name):
+    # History metrics
+    history_keys = history.history.keys()
     # 1. Plot accuracy
     plt.figure()
-    plt.plot(history.history['accuracy'])
-    plt.plot(history.history['val_accuracy'])
-    plt.title(f'{modelname} Accuracy')
+    plt.plot(history.history[history_keys[1]])
+    plt.plot(history.history[history_keys[3]])
+    plt.title(f'{model_name} Accuracy')
     plt.ylabel('Accuracy')
     plt.xlabel('Epoch')
     plt.legend(['Training', 'Validation'], loc='upper left')
 
     # Save the figure
-    fig_save_path = f'{savepath}/accuracy_{savename}.png'
+    fig_save_path = f'{save_path}/accuracy_{save_name}.png'
     plt.savefig(fig_save_path)
 
     # Show figure
@@ -33,46 +35,46 @@ def accloss(history, modelname, savepath, savename):
 
     # 2. Plot loss
     plt.figure()
-    plt.plot(history.history['loss'])
-    plt.plot(history.history['val_loss'])
-    plt.title(f'{modelname} Loss')
+    plt.plot(history.history[history_keys[0]])
+    plt.plot(history.history[history_keys[2]])
+    plt.title(f'{model_name} Loss')
     plt.ylabel('Loss')
     plt.xlabel('Epoch')
     plt.legend(['Training', 'Validation'], loc='upper left')
-    fig_save_path = f'{savepath}/loss_{savename}.png'
+    fig_save_path = f'{save_path}/loss_{save_name}.png'
     plt.savefig(fig_save_path)
     plt.show()
 
     return
 
 
-def cm(real_labels, pred_labels, modelname, classes, savepath, savename):
+def cm(real_labels, pred_labels, model_name, classes, save_path, save_name):
     cm = confusion_matrix(real_labels, pred_labels)
     sns.heatmap(cm, annot=True, fmt='d', cmap=plt.cm.Blues, xticklabels=classes, yticklabels=classes)
     plt.xticks(rotation=45)
-    plt.title(f'{modelname} Confusion Matrix')
+    plt.title(f'{model_name} Confusion Matrix')
     plt.ylabel('True label')
     plt.xlabel('Predicted label')
-    fig_save_path = f'{savepath}/cm_{savename}.png'
+    fig_save_path = f'{save_path}/cm_{save_name}.png'
     plt.savefig(fig_save_path)
     plt.show()
 
     return
 
 
-def cm_mutiabel(real_labels, pred_labels, modelname, classes, savepath, savename):
-# Plot confusion matrix
-    confusion = multilabel_confusion_matrix(real_labels, pred_labels)
-    fig = plt.figure(figsize = (14, 8))
-    for i, (label, matrix) in enumerate(zip(real_labels, confusion)):
-        plt.subplot(f'23{i+1}')
-        labels = [f'not_{label}', label]
-        sns.heatmap(matrix, annot=True, fmt='d', cmap='Blues', xticklabels=labels, yticklabels=labels)
-        plt.title(labels[0])
-    plt.xticks(rotation=45)
-    plt.ylabel('True label')
-    plt.xlabel('Predicted label')
-    fig_save_path = f'{savepath}/cm_{savename}.png'
-    plt.savefig(fig_save_path)
-    plt.show()
-    plt.tight_layout()
+def cm_mutilabel(y_true, y_pred, model_name, classes, save_path, save_name):
+    # Confusion matrices
+    confusion_matrices = multilabel_confusion_matrix(y_true, y_pred)
+    # Iteration to print all of them
+    for i, matrix in enumerate(confusion_matrices):
+        print(f"Matriz de Confusión para la Clase {i}:\n", matrix)
+        sns.heatmap(matrix, annot=True, fmt='d', cmap='Blues', xticklabels=classes, yticklabels=classes)
+        plt.title(f'Multilabel Confusion Matrix {i} with {model_name}')
+        plt.xticks(rotation=45)
+        plt.ylabel('True label')
+        plt.xlabel('Predicted label')
+        fig_save_path = f'{save_path}/cm_{save_name}.png'
+        plt.savefig(fig_save_path)
+        plt.show()
+
+    return
