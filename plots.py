@@ -17,8 +17,8 @@ import seaborn as sns
 def accloss(history, model_name, save_path, save_name):
     # 1. Plot accuracy
     plt.figure()
-    plt.plot(history.history['categorical_accuracy'])
-    plt.plot(history.history['val_categorical_accuracy'])
+    plt.plot(history.history['accuracy']) #categorical_accuracy
+    plt.plot(history.history['val_accuracy']) #val_categorical_accuracy
     plt.title(f'{model_name} Accuracy')
     plt.ylabel('Accuracy')
     plt.xlabel('Epoch')
@@ -65,13 +65,11 @@ def cm_mutilabel(y_true, y_pred, model_name, classes, save_path, save_name):
     confusion_matrices = multilabel_confusion_matrix(y_true, y_pred)
     # Iteration to print all of them
     for i, matrix in enumerate(confusion_matrices):
-        print(f"Matriz de Confusión para la Clase {i}:\n", matrix)
-        sns.heatmap(matrix, annot=True, fmt='d', cmap='Blues', xticklabels=classes, yticklabels=classes)
-        plt.title(f'Multilabel Confusion Matrix {i} with {model_name}')
+        print(f"Matriz de Confusión para la Clase {classes[i]}:\n", matrix)
+        sns.heatmap(matrix, annot=True, fmt='d', cmap='Blues', xticklabels=['Predicted Negative', 'Predicted Positive'], yticklabels=['Actual Negative', 'Actual Positive'])
+        plt.title(f'Multilabel Confusion Matrix for{classes[i]} Genre with {model_name}')
         plt.xticks(rotation=45)
-        plt.ylabel('True label')
-        plt.xlabel('Predicted label')
-        fig_save_path = f'{save_path}/cm_{save_name}_{i}.png'
+        fig_save_path = f'{save_path}/cm_{save_name}_classes{i}.png'
         plt.savefig(fig_save_path)
         plt.show()
 
