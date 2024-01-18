@@ -15,12 +15,10 @@ import seaborn as sns
 
 # Uses categorical variables because it is what is used in the deep learning (DL) models
 def accloss(history, model_name, save_path, save_name):
-    # History metrics
-    history_keys = history.history.keys()
     # 1. Plot accuracy
     plt.figure()
-    plt.plot(history.history[history_keys[1]])
-    plt.plot(history.history[history_keys[3]])
+    plt.plot(history.history['categorical_accuracy'])
+    plt.plot(history.history['val_categorical_accuracy'])
     plt.title(f'{model_name} Accuracy')
     plt.ylabel('Accuracy')
     plt.xlabel('Epoch')
@@ -35,8 +33,8 @@ def accloss(history, model_name, save_path, save_name):
 
     # 2. Plot loss
     plt.figure()
-    plt.plot(history.history[history_keys[0]])
-    plt.plot(history.history[history_keys[2]])
+    plt.plot(history.history['loss'])
+    plt.plot(history.history['val_loss'])
     plt.title(f'{model_name} Loss')
     plt.ylabel('Loss')
     plt.xlabel('Epoch')
@@ -73,7 +71,7 @@ def cm_mutilabel(y_true, y_pred, model_name, classes, save_path, save_name):
         plt.xticks(rotation=45)
         plt.ylabel('True label')
         plt.xlabel('Predicted label')
-        fig_save_path = f'{save_path}/cm_{save_name}.png'
+        fig_save_path = f'{save_path}/cm_{save_name}_{i}.png'
         plt.savefig(fig_save_path)
         plt.show()
 
