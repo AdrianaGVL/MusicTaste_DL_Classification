@@ -69,7 +69,7 @@ def cm_mutilabel(y_true, y_pred, model_name, classes, save_path, save_name):
         sns.heatmap(matrix, annot=True, fmt='d', cmap='Blues', xticklabels=['Predicted Negative', 'Predicted Positive'], yticklabels=['Actual Negative', 'Actual Positive'])
         plt.title(f'Multilabel Confusion Matrix for {classes[i]} Genre with {model_name}')
         plt.xticks(rotation=45)
-        fig_save_path = f'{save_path}/cm_{save_name}_classes{i}.png'
+        fig_save_path = f'{save_path}/cm_{save_name}_{classes[i]}.png'
         plt.savefig(fig_save_path)
         plt.show()
 
