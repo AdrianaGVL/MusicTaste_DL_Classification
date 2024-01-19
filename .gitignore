@@ -2,3 +2,6 @@ papers/
 .idea/
 __pycache__/
 results/ViT/*.h5
+RNNs_audios.ipynb
+vision_transformer.ipynb
+results/ViT/
